@@ -1,20 +1,25 @@
 # RadioWeatherStation
-<p>Weather stazione with outdoor sensors radio connected with an indoor lcd and database.</p>
-<p>One Arduino mega2560 (UNO can also be used) collecting data from external sensor, send data via radio with a nRF24 2.4GHz module to indoor Arduino; data are locally saved in SD for backup.</p>
-<p>Second indor Arduino mega (UNO can also be used) show data on 1.8" TFT screen, send data to raspberry on serial port.</p>
-<p>Raspeberry store data in mariaDB database and host the <a href="https://meteocremolino.ddns.net">station site</a>.</p>
+<p>Weather stazione with outdoor sensors, radio connected with an indoor lcd and database.</p>
+<li>Arduino mega2560 collects data from external sensors and save data in a SD card</li>
+<li>Data sent via radio with a LoRa module to an indoor Arduino</li>
+<li>Outdoor Arduino mega2560 shows data on 1.8" TFT color screen</li>
+<li>Raspeberry Pi collects data from indoor Arduino, it stores data in a mariaDB database and hosts the <a href="https://meteocremolino.ddns.net">station site</a>.<//li>
 
-<p>Originally the station was made with only two arduino, the indoor one was a server for a html page (see Webbino code version v1.3). That's why two arduino are still present in the project, indoor arduino can be removed.</p>
-<p>Data from a sensor is the average of 60 measures over one minute, sampling frequency of 1Hz.</p> 
+<p>Originally the station was made with only two arduino, the indoor one was a server for a html page (see Webbino code version v1.3). That's why two arduino are still present in the project, indoor arduino can be removed. The LoRa module LLCC68 replaces radio module NRF24L01 + PA + LNA, for better reliability</p>
+<p>Data stored from the sensor is the average of 60 measures over one minute, sampling frequency of 1Hz. A basic filtering is performed, based on the range of the instruments' datasheets.</p>
+<p>
+  <strong>January 2025</strong>
+  The site is no longer hosted on Raspberry Pi, which continues to save data in the database. The data is sent to a server with a POST request to a PHP page. A SIM800L GSM module and a pay-as-you-go SIM card are used, given the low amount of MB required (about 1-2 MB per day). The Arduino code remains valid, removing the initSIM800L(), resetSIM800(), and serverRequest() functions.
+</p>
 
 <p>
   <strong>Sensors:</strong>
-<li>Sensirion sht35 (I2C)</li>
-<li>Bosch bmp180 (I2C)</li>
-<li>DHT22 (digital) (optional)</li>
-<li>ds18b20 (digital) (optional)</li>
+<li>Thermohygrometer Sensirion SHT35 (I2C)</li>
+<li>Barometer Bosch BMPT180 (I2C, indoor)</li>
+<li>Thermohygrometer DHT22 (digital) (optional)</li>
+<li>Thermometer ds18b20 (digital) (optional)</li>
 <li>Anemometer DeAgostini (reed contact)</li>
-<li>Wind direction DeAgostini (voltage output)</li>
+<li>Wind vane DeAgostini (photodiode,voltage output)</li>
 <li>Rain gauge DeAgostini (reed contact)</li>
 </p>
 
@@ -25,7 +30,33 @@
 <li>Atmospheric pressure</li>
 <li>Wind Speed</li>
 <li>Wind Direction</li>
-<li>mm of rain</li>
+<li>Precipitation in mm/m^2</li>
 <li>Rain rate</li>
 <li>DewPoint, WetBulb, HeatIndex, WindChill</li>
+</p>
+
+<p>
+  <strong>Outdoor station components:</strong>
+<li>Arduino Mega2560</li>
+<li>SD breakout board 3.3V</li>
+<li>RTC DS3231 - commands sampling at 1Hz and attaches a timestamp to the data</li>
+<li>Weather sensors listed above connected via cable to the Arduino</li>
+<li>12V 12Ah lead-acid battery</li>
+<li>Solar charge controller</li>
+<li>Solar panel 50W</li>
+<li>Waterproof case</li>
+<li>12V DC -> 5V DC Step down - LM2596</li>
+<li>I2C extender (optional)</li>
+<li>MCP1700-3302E/TO-92 LDO to power LoRa module</li>
+</p>
+
+<p>
+  <strong>Indoor station components:</strong>
+<li>Arduino Mega2560</li>
+<li>Screen 1.8" TFT</li>
+<li>Barometer BMP180</li>
+<li>LoRa receiver</li>
+<li>USB cable</li>
+<li>Raspberry Pi 3B</li>
+<li>MCP1700-3302E/TO-92 LDO to power LoRa module</li>
 </p>
