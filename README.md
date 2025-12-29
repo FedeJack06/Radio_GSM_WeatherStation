@@ -1,17 +1,21 @@
-# RadioWeatherStation
+# Radio Weather Station - GSM Weather Station
 <p>Weather stazione with outdoor sensors, radio connected with an indoor lcd and database.</p>
-<li>Arduino mega2560 collects data from external sensors and save data in a SD card</li>
-<li>Data sent via radio with a LoRa module to an indoor Arduino</li>
-<li>Outdoor Arduino mega2560 shows data on 1.8" TFT color screen</li>
-<li>Raspeberry Pi collects data from indoor Arduino, it stores data in a mariaDB database and hosts the <a href="https://meteocremolino.ddns.net">station site</a>.<//li>
+<li>Arduino mega2560 collects data from external sensors and save data in a SD card.</li>
+<li>Data sent via radio with a LoRa module to an indoor Arduino.</li>
+<li>Outdoor Arduino mega2560 shows data on 1.8" TFT color screen.</li>
+<li>Raspeberry Pi collects data from indoor Arduino, it stores data in a mariaDB database and hosts the <a href="https://meteocremolino.ddns.net">station site</a>.</li>
+<li>Now data is also sent online with GSM Module.</li>
 
+## Changelog
 <p>Originally the station was made with only two arduino, the indoor one was a server for a html page (see Webbino code version v1.3). That's why two arduino are still present in the project, indoor arduino can be removed. The LoRa module LLCC68 replaces radio module NRF24L01 + PA + LNA, for better reliability</p>
 <p>Data stored from the sensor is the average of 60 measures over one minute, sampling frequency of 1Hz. A basic filtering is performed, based on the range of the instruments' datasheets.</p>
-<p>
-  <strong>January 2025</strong>
+
+### January 2025
+  <p>
   The site is no longer hosted on Raspberry Pi, which continues to save data in the database. The data is sent to a server with a POST request to a PHP page. A SIM800L GSM module and a pay-as-you-go SIM card are used, given the low amount of MB required (about 1-2 MB per day). The Arduino code remains valid, removing the initSIM800L(), resetSIM800(), and serverRequest() functions.
 </p>
 
+## Weather features
 <p>
   <strong>Sensors:</strong>
 <li>Thermohygrometer Sensirion SHT35 (I2C)</li>
@@ -35,6 +39,7 @@
 <li>DewPoint, WetBulb, HeatIndex, WindChill</li>
 </p>
 
+## Components
 <p>
   <strong>Outdoor station components:</strong>
 <li>Arduino Mega2560</li>
@@ -59,4 +64,5 @@
 <li>USB cable</li>
 <li>Raspberry Pi 3B</li>
 <li>MCP1700-3302E/TO-92 LDO to power LoRa module</li>
+<li>SIM800L - powered by external 5V power supply </li>
 </p>
