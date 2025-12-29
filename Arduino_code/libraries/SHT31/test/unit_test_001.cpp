@@ -31,15 +31,19 @@
 
 #include <ArduinoUnitTests.h>
 
+
 #include "Arduino.h"
 #include "SHT31.h"
+
 
 int expect;  // TODO needed as there seems a problem with 8 bit comparisons (char?)
 
 uint32_t start, stop;
 
+
 unittest_setup()
 {
+  fprintf(stderr, "SHT31_LIB_VERSION: %s\n", (char *) SHT31_LIB_VERSION);
 }
 
 
@@ -48,11 +52,42 @@ unittest_teardown()
 }
 
 
+unittest(test_constants_1)
+{
+  fprintf(stderr, "fields readStatus\n");
+  assertEqual(SHT31_STATUS_ALERT_PENDING   , (1 << 15) );
+  assertEqual(SHT31_STATUS_HEATER_ON       , (1 << 13) );
+  assertEqual(SHT31_STATUS_HUM_TRACK_ALERT , (1 << 11) );
+  assertEqual(SHT31_STATUS_TEMP_TRACK_ALERT, (1 << 10) );
+  assertEqual(SHT31_STATUS_SYSTEM_RESET    , (1 << 4)  );
+  assertEqual(SHT31_STATUS_COMMAND_STATUS  , (1 << 1)  );
+  assertEqual(SHT31_STATUS_WRITE_CRC_STATUS, (1 << 0)  );
+}
+
+
+unittest(test_constants_2)
+{
+  fprintf(stderr, "error codes\n");
+  assertEqual(SHT31_OK                 , 0x00);
+  assertEqual(SHT31_ERR_WRITECMD       , 0x81);
+  assertEqual(SHT31_ERR_READBYTES      , 0x82);
+  assertEqual(SHT31_ERR_HEATER_OFF     , 0x83);
+  assertEqual(SHT31_ERR_NOT_CONNECT    , 0x84);
+  assertEqual(SHT31_ERR_CRC_TEMP       , 0x85);
+  assertEqual(SHT31_ERR_CRC_HUM        , 0x86);
+  assertEqual(SHT31_ERR_CRC_STATUS     , 0x87);
+  assertEqual(SHT31_ERR_HEATER_COOLDOWN, 0x88);
+  assertEqual(SHT31_ERR_HEATER_ON      , 0x89);
+}
+
+
 unittest(test_begin)
 {
-  SHT31 sht;
+  SHT31 sht(0x44);
 
-  bool b = sht.begin(0x44);
+  Wire.begin();
+
+  bool b = sht.begin();
   assertEqual(b, true);
 
   assertTrue(sht.reset());
@@ -74,8 +109,11 @@ unittest(test_begin)
 
 unittest(test_read)
 {
-  SHT31 sht;
-  bool b = sht.begin(0x44);
+  SHT31 sht(0x44);
+
+  Wire.begin();
+
+  bool b = sht.begin();
   assertEqual(b, true);
 
   assertTrue(sht.isConnected());
@@ -104,8 +142,11 @@ unittest(test_read)
 
 unittest(test_readStatus)
 {
-  SHT31 sht;
-  bool b = sht.begin(0x44);
+  SHT31 sht(0x44);
+
+  Wire.begin();
+
+  bool b = sht.begin();
   assertEqual(b, true);
   
   assertEqual(0xFFFF, sht.readStatus());
@@ -116,8 +157,11 @@ unittest(test_readStatus)
 
 unittest(test_heater)
 {
-  SHT31 sht;
-  bool b = sht.begin(0x44);
+  SHT31 sht(0x44);
+
+  Wire.begin();
+
+  bool b = sht.begin();
   assertEqual(b, true);
   
   assertTrue(sht.heatOn());
@@ -136,8 +180,11 @@ unittest(test_heater)
 
 unittest(test_async)
 {
-  SHT31 sht;
-  bool b = sht.begin(0x44);
+  SHT31 sht(0x44);
+
+  Wire.begin();
+
+  bool b = sht.begin();
   assertEqual(b, true);
   
   assertTrue(sht.requestData());
@@ -164,4 +211,4 @@ unittest(test_async)
 
 unittest_main()
 
-// --------
+//  -- END OF FILE -- 

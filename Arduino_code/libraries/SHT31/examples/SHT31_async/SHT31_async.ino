@@ -1,7 +1,6 @@
 //
 //    FILE: SHT31_async.ino
 //  AUTHOR: Rob Tillaart
-// VERSION: 0.1.0
 // PURPOSE: demo async interface
 //     URL: https://github.com/RobTillaart/SHT31
 
@@ -15,7 +14,7 @@ uint32_t start;
 uint32_t stop;
 uint32_t cnt;
 
-SHT31 sht;
+SHT31 sht;  //  use default address and Wire
 
 
 void setup()
@@ -26,8 +25,8 @@ void setup()
   Serial.println(SHT31_LIB_VERSION);
 
   Wire.begin();
-  sht.begin(SHT31_ADDRESS);
   Wire.setClock(100000);
+  sht.begin();
 
   uint16_t stat = sht.readStatus();
   Serial.print(stat, HEX);
@@ -43,9 +42,9 @@ void loop()
   if (sht.dataReady())
   {
     start = micros();
-    bool success  = sht.readData();   // default = true = fast
+    bool success  = sht.readData();   //  default = true = fast
     stop = micros();
-    sht.requestData();                // request for next sample
+    sht.requestData();                //  request for next sample
 
     Serial.print("\t");
     Serial.print(stop - start);
@@ -64,7 +63,9 @@ void loop()
       cnt = 0;
     }
   }
-  cnt++; // simulate other activity
+  cnt++;  //  simulate other activity
 }
 
-// -- END OF FILE --
+
+//  -- END OF FILE --
+

@@ -36,11 +36,18 @@
 #elif defined(__SAMD21G18A__)
 #define IO_REG_TYPE uint32_t
 
+#elif defined(__ASR6501__)
+#define IO_REG_TYPE uint32_t
+
 #elif defined(RBL_NRF51822)
 #define IO_REG_TYPE uint32_t
 
 #elif defined(__arc__) /* Arduino101/Genuino101 specifics */
 #define IO_REG_TYPE uint32_t
+
+#elif defined(__MBED__)
+#include "DigitalInOut.h"
+#define IO_REG_TYPE mbed::DigitalInOut*
 
 #elif defined(__riscv)
 #define IO_REG_TYPE uint32_t
