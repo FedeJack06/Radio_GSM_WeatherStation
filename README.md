@@ -4,7 +4,7 @@
 <li>Data sent via radio with a LoRa module to an indoor Arduino.</li>
 <li>Outdoor Arduino mega2560 shows data on 1.8" TFT color screen.</li>
 <li>Raspeberry Pi collects data from indoor Arduino, it stores data in a mariaDB database and hosts the <a href="https://meteocremolino.ddns.net">station site</a>.</li>
-<li>Now data is also sent online with GSM Module.</li>
+<li>Now data is also sent online by Arduino with GSM Module.</li>
 
 ## Changelog
 <p>Originally the station was made with only two arduino, the indoor one was a server for a html page (see Webbino code version v1.3). That's why two arduino are still present in the project, indoor arduino can be removed. The LoRa module LLCC68 replaces radio module NRF24L01 + PA + LNA, for better reliability</p>
