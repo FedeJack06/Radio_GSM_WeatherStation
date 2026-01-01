@@ -16,6 +16,7 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
+arduino_serial_number = '8593732313035181F030'
 errorCount = 0
 insertData = False
 rowPyPrevious = ""
@@ -26,7 +27,7 @@ def find_arduino(serial_number):
         if pinfo.serial_number == serial_number:
             return pinfo.device
     raise IOError("Could not find an arduino - is it plugged in?")
-port = find_arduino(serial_number='8593732313035181F030')
+port = find_arduino(serial_number=arduino_serial_number)
 #begin serial
 ser = serial.Serial(port, 9600, timeout=3)
 ser.close()
@@ -130,29 +131,3 @@ while True:
 				print("Received " + str(r2.status_code) + " " + str(r2.text))
 				sys.stdout.flush()
 			print(mycursor.rowcount, "controls inserted.")'''
-
-	if radio_link == "%2":
-		line2 = ser.readline().decode().rstrip()
-		single2 = line2.split()
-		single2[0:2] = [' '.join(single2[0:2])] #unisce con spazio in mezzo date e time
-		print(single2)
-		sys.stdout.flush()
-
-		sql5 = "INSERT INTO wsmini(date, tp, tpbmp, ur, pressione, mmpioggia, rainrate, tpmax, tpmin, urmax, urmin, ndata, volt, status, pressionelivellodelmare) values(%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s,%s, %s, %s)"
-		try:
-			mycursor.execute(sql5, single2)
-			mydb.commit()
-		except mysql.connector.errors.IntegrityError:
-			print("error inserting wsmini")
-
-		# Send to server
-		'''url5 = "http://212.227.60.35/php-obtain/wsmini.php?p="
-		url5 = url5 + "date," + str().replace(":", "%3A").replace(" ", "+")
-		url5 = url5 + ",tp," + str(single2[1]) + ",tpbmp," + str(single2[2]) + ",ur," + str(single2[3]) + ",pressione," + str(single2[4]) + ",mmpioggia," + str(single2[5]) + ",rainrate," + str(single2[6]) + ",tpmax," + str(single2[7])
-		url5 = url5 + ",tpmin," + str(single2[8]) + ",urmax," + str(single2[9]) + ",urmin," + str(single2[10]) + ",ndata," + str(single2[11]) + ",volt," + str(single2[12])
-		url5 = url5 + ",status," + str(single2[13]) + ",pressionelivellodelmare," + str(single2[14])
-		print(url5)
-		r5 = requests.get(url5)
-		if r5.status_code != 200:
-			print("Received " + str(r5.status_code) + " " + str(r5.text))
-			sys.stdout.flush()'''
