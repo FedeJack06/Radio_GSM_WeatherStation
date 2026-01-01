@@ -95,6 +95,18 @@ while True:
 				mydb.commit()
 			except mysql.connector.errors.IntegrityError:
 				print("error inserting dataday")
+
+			#import in meteo.control
+			line_control = ser.readline().decode().rstrip()
+			single_control = line_control.split()
+			
+			sql2 = "INSERT INTO control(date, volt, bmp_status, sd_status, sd_tx_status, reset_tx, ack_tx) values(%s, %s, %s, %s, %s, %s, %s)"
+			val2 = [ws_datetime] + single_control
+			try:
+				mycursor.execute(sql2, val2)
+				mydb.commit()
+			except mysql.connector.errors.IntegrityError:
+				print("error inserting control")
 			
 			# Send to server
 			'''url = "http://212.227.60.35/php-obtain/dataday.php?p="
@@ -108,18 +120,6 @@ while True:
 				print("Received " + str(r.status_code) + " " + str(r.text))
 				sys.stdout.flush()
 			print(mycursor.rowcount, "data inserted.")'''
-
-			#import in meteo.control
-			line_control = ser.readline().decode().rstrip()
-			single_control = line_control.split()
-			
-			sql2 = "INSERT INTO control(date, volt, bmp_status, sd_status, sd_tx_status, reset_tx, ack_tx) values(%s, %s, %s, %s, %s, %s, %s)"
-			val2 = [ws_datetime] + single_control
-			try:
-				mycursor.execute(sql2, val2)
-				mydb.commit()
-			except mysql.connector.errors.IntegrityError:
-				print("error inserting control")
 
 			# Send to server
 			'''url2 = "http://212.227.60.35/php-obtain/control.php?p="
