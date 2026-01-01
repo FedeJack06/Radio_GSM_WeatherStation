@@ -1,13 +1,21 @@
-import serial
+import serial #pyserial 3.5
 import serial.tools.list_ports
 import time
-import mysql.connector
+import mysql.connector #mysql-connector-python 8.2.0
 from datetime import datetime
 import sys
 import requests
 
+#################################################
+# Script to read serial data from Arduino Indoor
+# Use arduino_serial_number to find correct USB port to read
+# Insert data into local MYSQL Database
+# Commented section: send data to server requesting php page
+# Compatible with ws_slave_1.7 version
+#################################################
+
 time.sleep(1)
-#connect to meteo.dataday
+#connect to mariadb database
 mydb = mysql.connector.connect(
   host="127.0.0.1",
   user="",
